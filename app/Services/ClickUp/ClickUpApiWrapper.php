@@ -31,4 +31,47 @@ class ClickUpApiWrapper
             return $response->getBody()->getContents();
         }
     }
+
+    /**
+     * Get spaces
+     *
+     * @param string $apiToken
+     * @param int $teamId
+     *
+     * @return mixed
+     */
+    public function getSpaces($apiToken, $teamId)
+    {
+        if (!empty($apiToken) && !empty($teamId)) {
+            $spacesEndpoint = self::ENDPOINT . '/team/' . $teamId . '/space?archived=false';
+
+            $guzzleClient = new GuzzleClient;
+
+            $response = $guzzleClient->request('GET', $spacesEndpoint, [
+                'headers' => [
+                    'Authorization' => $apiToken
+                ]
+            ]);
+
+            return json_decode($response->getBody()->getContents());
+        }
+    }
+
+    /**
+     * Get user
+     */
+    public function getUser($apiToken, $teamId, $userId)
+    {
+        $userEndpoint = self::ENDPOINT . '/team/' . $teamId . '/user/' . $userId;
+
+        $guzzleClient = new GuzzleClient;
+
+        $response = $guzzleClient->request('GET', $userEndpoint, [
+            'headers' => [
+                'Authorization' => $apiToken,
+            ]
+        ]);
+
+        return json_decode($response->getBody()->getContents());
+    }
 }
