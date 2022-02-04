@@ -1,6 +1,9 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
+
+use App\Services\ClickUp\ClickUpApiWrapper;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +17,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+
+    $clickUpApi = new ClickUpApiWrapper;
+
+    $user = User::findOrFail(1);
+
+
+    $clickUpApi->getTeams($user->clickup_api_token);
+
 });
